@@ -4,14 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.leilao.R
 import com.example.leilao.databinding.ActivityMainBinding
 import com.example.leilao.model.Lance
 import com.example.leilao.model.Leilao
 import com.example.leilao.model.Usuario
 import com.example.leilao.ui.recyclerview.LeilaoAdapter
-import java.util.Arrays
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         val list = ArrayList<Leilao>()
         val console = Leilao("Console")
         console.newLance(Lance(Usuario("Eduardo"), 220.50))
+        console.newLance(Lance(Usuario("José"), 250.35))
+        console.newLance(Lance(Usuario("Felipe"), 55.0))
+        console.newLance(Lance(Usuario("Felipe"), 56.0))
 
         list.add(console)
 
