@@ -6,6 +6,20 @@ class Leilao (
     val descricao: String,
 ) : Serializable {
 
-    private lateinit var lances: List<Lance>
+    private var lances: List<Lance> = ArrayList()
+    private var maiorLance: Double? = null
+
+    fun newLance(lance: Lance) {
+        lances += lance
+
+        if (maiorLance == null || lance.valor >= maiorLance!!) {
+            maiorLance = lance.valor
+        }
+    }
+
+    fun getMaiorLance(): Double? {
+
+        return maiorLance
+    }
 
 }

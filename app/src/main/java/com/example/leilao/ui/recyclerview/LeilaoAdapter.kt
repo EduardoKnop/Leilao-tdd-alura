@@ -20,7 +20,9 @@ class LeilaoAdapter (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val leilao = leiloes[position]
+
         holder.tvDescricao.text = leilao.descricao
+        holder.tvMaiorLance.text = (leilao.getMaiorLance() ?: 0.0).toString()
 
         holder.itemView.setOnClickListener {
             if (onClickListener != null) {
@@ -43,6 +45,7 @@ class LeilaoAdapter (
 
     class ViewHolder(view: ItemLeilaoBinding) : RecyclerView.ViewHolder(view.root) {
         val tvDescricao = view.itemLeilaoDescricao
+        val tvMaiorLance = view.itemLeilaoMaiorLance
         val ivImage = view.itemLeilaoImagem
     }
 }

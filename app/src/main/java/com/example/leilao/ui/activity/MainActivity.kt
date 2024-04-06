@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leilao.R
 import com.example.leilao.databinding.ActivityMainBinding
+import com.example.leilao.model.Lance
 import com.example.leilao.model.Leilao
+import com.example.leilao.model.Usuario
 import com.example.leilao.ui.recyclerview.LeilaoAdapter
 import java.util.Arrays
 
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private fun leiloesDeExemplo(): List<Leilao> {
         val list = ArrayList<Leilao>()
         val console = Leilao("Console")
+        console.newLance(Lance(Usuario("Eduardo"), 220.50))
 
         list.add(console)
 
