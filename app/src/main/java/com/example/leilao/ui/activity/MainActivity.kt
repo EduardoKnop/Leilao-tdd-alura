@@ -35,13 +35,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun leiloesDeExemplo(): List<Leilao> {
         val list = ArrayList<Leilao>()
+
         val console = Leilao("Console")
         console.newLance(Lance(Usuario("Eduardo"), 220.50))
         console.newLance(Lance(Usuario("José"), 250.35))
         console.newLance(Lance(Usuario("Felipe"), 55.0))
         console.newLance(Lance(Usuario("Felipe"), 56.0))
 
+        val carro = Leilao("Carro")
+
         list.add(console)
+        list.add(carro)
 
         return list
     }

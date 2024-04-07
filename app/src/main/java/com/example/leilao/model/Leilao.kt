@@ -12,28 +12,35 @@ class Leilao (
     var menorLance: Double? = null
         private set
 
-    fun newLance(lance: Lance) {
-        lances.add(lance)
-
-        verifyUpdateMaiorLance(lance)
-        verifyUpdateMenorLance(lance)
-    }
-
-    private fun verifyUpdateMaiorLance(lance: Lance) {
-        if (maiorLance == null || lance.valor >= maiorLance!!) {
+    fun newLance(lance: Lance): Boolean {
+        if (lances.isEmpty()) {
+            lances.add(lance)
             maiorLance = lance.valor
-        }
-    }
-
-    private fun verifyUpdateMenorLance(lance: Lance) {
-        if (menorLance == null || lance.valor <= menorLance!!) {
             menorLance = lance.valor
+
+            return true
         }
+
+        if (lance.valor <= maiorLance!! || lance.usuario == lances.last().usuario) return false
+
+        var countUserLances = 0
+        lances.forEach { l ->
+            if (l.usuario == lance.usuario) {
+                countUserLances++
+
+                if (countUserLances >= 5) return false
+            }
+        }
+
+        lances.add(lance)
+        maiorLance = lance.valor
+
+        return true
     }
 
     fun getLancesSortedByValor() : List<Lance> {
 
-        return lances.sortedDescending()
+        return lances.reversed()
     }
 
 }
