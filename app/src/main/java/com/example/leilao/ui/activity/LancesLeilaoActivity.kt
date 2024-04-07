@@ -22,13 +22,13 @@ class LancesLeilaoActivity : AppCompatActivity() {
         if (intent.hasExtra("leilao")) {
             val leilao = getSerializable(this, "leilao", Leilao::class.java)
 
-            var maioresLances = ""
             val listLances = if (leilao.lances.size > 3) {
                 leilao.getLancesSortedByValor().subList(0, 3)
             } else {
                 leilao.getLancesSortedByValor()
             }
 
+            var maioresLances = ""
             listLances.forEach {
                 maioresLances += String.format("R$ %.2f\n", it.valor)
             }

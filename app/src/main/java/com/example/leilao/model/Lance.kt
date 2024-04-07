@@ -8,6 +8,7 @@ class Lance (
 ) : Serializable, Comparable<Lance> {
 
     override fun compareTo(other: Lance): Int {
+
         return this.valor.compareTo(other.valor)
     }
 }
