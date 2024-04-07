@@ -22,7 +22,7 @@ class LeilaoAdapter (
         val leilao = leiloes[position]
 
         holder.tvDescricao.text = leilao.descricao
-        holder.tvMaiorLance.text = (leilao.maiorLance ?: 0.0).toString()
+        holder.tvMaiorLance.text = String.format("R$ %.2f", leilao.maiorLance ?: 0.0)
 
         holder.itemView.setOnClickListener {
             if (onClickListener != null) {

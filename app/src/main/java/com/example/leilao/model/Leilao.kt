@@ -15,10 +15,17 @@ class Leilao (
     fun newLance(lance: Lance) {
         lances.add(lance)
 
+        verifyUpdateMaiorLance(lance)
+        verifyUpdateMenorLance(lance)
+    }
+
+    private fun verifyUpdateMaiorLance(lance: Lance) {
         if (maiorLance == null || lance.valor >= maiorLance!!) {
             maiorLance = lance.valor
         }
+    }
 
+    private fun verifyUpdateMenorLance(lance: Lance) {
         if (menorLance == null || lance.valor <= menorLance!!) {
             menorLance = lance.valor
         }
