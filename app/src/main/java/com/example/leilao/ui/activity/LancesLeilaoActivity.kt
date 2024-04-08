@@ -4,13 +4,9 @@ import android.app.Activity
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.RequiresApi
-import com.example.leilao.R
 import com.example.leilao.databinding.ActivityLancesLeilaoBinding
-import com.example.leilao.model.Lance
 import com.example.leilao.model.Leilao
 import java.io.Serializable
-import java.util.Arrays
 
 class LancesLeilaoActivity : AppCompatActivity() {
 
@@ -22,10 +18,10 @@ class LancesLeilaoActivity : AppCompatActivity() {
         if (intent.hasExtra("leilao")) {
             val leilao = getSerializable(this, "leilao", Leilao::class.java)
 
-            val listLances = if (leilao.lances.size > 3) {
-                leilao.getLancesSortedByValor().subList(0, 3)
+            val listLances = if (leilao.getLances().size > 3) {
+                leilao.getLances().subList(0, 3)
             } else {
-                leilao.getLancesSortedByValor()
+                leilao.getLances()
             }
 
             var maioresLances = ""
