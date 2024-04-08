@@ -1,7 +1,7 @@
 package com.example.leilao.model
 
 import org.junit.jupiter.api.Assertions.*
-
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 private const val DELTA = 0.0001
@@ -9,7 +9,6 @@ private const val DESCRIPTION = "description-1"
 private const val USER_1 = "user-1"
 private const val USER_2 = "user-2"
 private const val VALUE = 50.0
-
 
 class LeilaoTest {
 
@@ -75,25 +74,46 @@ class LeilaoTest {
     fun newLance_LancesCheaperOrEqualsThanMaiorLance_ShouldNotBeAccepted() {
         bid1.newLance(Lance(user1, 500.0))
 
-        assertFalse(bid1.newLance(Lance(user1, 400.0)))
-        assertFalse(bid1.newLance(Lance(user2, 450.0)))
-        assertFalse(bid1.newLance(Lance(user1, 100.0)))
-        assertFalse(bid1.newLance(Lance(user2, 500.0)))
-        assertEquals(1, bid1.lances.size)
+        var e: Exception
+        e = assertThrows(Leilao.CheaperLanceException::class.java) { bid1.newLance(Lance(user1, 400.0)) }
+        assertEquals("Lance's Valor Cheaper than MaiorLance", e.message)
+        e = assertThrows(Leilao.CheaperLanceException::class.java) { bid1.newLance(Lance(user2, 450.0)) }
+        assertEquals("Lance's Valor Cheaper than MaiorLance", e.message)
+        e = assertThrows(Leilao.CheaperLanceException::class.java) { bid1.newLance(Lance(user1, 100.0)) }
+        assertEquals("Lance's Valor Cheaper than MaiorLance", e.message)
+        e = assertThrows(Leilao.CheaperLanceException::class.java) { bid1.newLance(Lance(user2, 500.0)) }
+        assertEquals("Lance's Valor Cheaper than MaiorLance", e.message)
+        assertEquals(1, bid1.getLances().size)
     }
 
     @Test
     fun newLance_SameUserCreateTwoOrMoreConsecutiveLances_ShouldNotBeAccepted() {
         bid1.newLance(Lance(user1, 500.0))
 
-        assertFalse(bid1.newLance(Lance(Usuario("user-1"), 600.0)))
-        assertFalse(bid1.newLance(Lance(Usuario("user-1"), 550.0)))
-        assertFalse(bid1.newLance(Lance(Usuario("user-1"), 100.0)))
-        assertFalse(bid1.newLance(Lance(Usuario("user-1"), 650.0)))
-        assertEquals(1, bid1.lances.size)
+        var e: Exception
+        e = assertThrows(Leilao.SameUserException::class.java) {
+            bid1.newLance(
+                Lance(
+                    Usuario("user-1"),
+                    600.0
+                )
+            )
+        }
+        assertEquals("Lance's User was the Same that the Previously One", e.message)
+        e = assertThrows(Leilao.SameUserException::class.java) {
+            bid1.newLance(
+                Lance(
+                    Usuario("user-1"),
+                    700.0
+                )
+            )
+        }
+        assertEquals("Lance's User was the Same that the Previously One", e.message)
+        assertEquals(1, bid1.getLances().size)
     }
 
     @Test
+    @DisplayName("If a User create more than Five Lances, Throws a RuntimeException")
     fun newLance_SameUserCreateMoreThanFiveLances_ShouldNotBeAccepted() {
         bid1.newLance(Lance(user1, 100.0))
         bid1.newLance(Lance(user2, 150.0))
@@ -106,9 +126,9 @@ class LeilaoTest {
         bid1.newLance(Lance(user1, 500.0))
         bid1.newLance(Lance(user2, 550.0))
 
-        assertFalse(bid1.newLance(Lance(user1, 600.0)))
-        assertFalse(bid1.newLance(Lance(user2, 650.0)))
-        assertEquals(10, bid1.lances.size)
+        val e = assertThrows(Leilao.MoreFiveLancesException::class.java) { bid1.newLance(Lance(user1, 600.0)) }
+        assertEquals("User already did 5 Lances in this Leilao", e.message)
+        assertEquals(10, bid1.getLances().size)
         assertEquals(550.0, bid1.maiorLance!!, DELTA)
     }
 
@@ -123,13 +143,13 @@ class LeilaoTest {
     }
 
     @Test
-    fun getLancesSortedByValor_ReceivesNoLances_ReturnsEmptyList() {
+    fun getLances_ReceivesNoLances_ReturnsEmptyList() {
 
-        assertEquals(0, bid1.getLancesSortedByValor().size)
+        assertEquals(0, bid1.getLances().size)
     }
 
     @Test
-    fun getLancesSortedByValor_ReceivesVariousLances_ReturnsOrderedList() {
+    fun getLances_ReceivesVariousLances_ReturnsOrderedList() {
         val lance1 = Lance(user1, 5600.56)
         val lance2 = Lance(user2, 456.98)
         val lance3 = Lance(user1, 431.4)
@@ -148,9 +168,9 @@ class LeilaoTest {
         bid1.newLance(lance2)
         bid1.newLance(lance1)
 
-        assertEquals(listOrdered, bid1.getLancesSortedByValor())
-        assertEquals(bid1.maiorLance!!, bid1.getLancesSortedByValor().first().valor, DELTA)
-        assertEquals(bid1.menorLance!!, bid1.getLancesSortedByValor().last().valor, DELTA)
+        assertEquals(listOrdered, bid1.getLances())
+        assertEquals(bid1.maiorLance!!, bid1.getLances().first().valor, DELTA)
+        assertEquals(bid1.menorLance!!, bid1.getLances().last().valor, DELTA)
     }
 
     @Test

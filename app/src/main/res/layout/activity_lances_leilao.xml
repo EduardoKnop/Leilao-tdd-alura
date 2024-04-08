@@ -102,5 +102,16 @@
             app:layout_constraintTop_toBottomOf="@id/lances_leilao_titulo_maiores"
             tools:text="R$ 1000,00" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddLance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_adiciona"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+        />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

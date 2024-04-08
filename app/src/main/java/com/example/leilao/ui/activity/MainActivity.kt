@@ -3,51 +3,78 @@ package com.example.leilao.ui.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.leilao.R
+import com.example.leilao.api.retrofit.client.LeilaoWebClient
+import com.example.leilao.api.retrofit.client.ResponseListener
 import com.example.leilao.databinding.ActivityMainBinding
-import com.example.leilao.model.Lance
 import com.example.leilao.model.Leilao
-import com.example.leilao.model.Usuario
 import com.example.leilao.ui.recyclerview.LeilaoAdapter
+
+private const val MESSAGE_FAILED_LOAD_LEILOES = "Não foi possível carregar os leilões"
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var leilaoAdapter: LeilaoAdapter
+    private val client = LeilaoWebClient()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.listaLeilaoRecyclerview.layoutManager = LinearLayoutManager(this)
-        binding.listaLeilaoRecyclerview.setHasFixedSize(true)
-        val leilaoAdapter = LeilaoAdapter(leiloesDeExemplo())
+        leilaoAdapter = LeilaoAdapter(this@MainActivity)
 
+        binding.listaLeilaoRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listaLeilaoRecyclerview.adapter = leilaoAdapter
 
         leilaoAdapter.setOnClickListener(object :
             LeilaoAdapter.OnClickListener {
             override fun onClick(position: Int, model: Leilao) {
                 val intent = Intent(this@MainActivity, LancesLeilaoActivity::class.java)
-                intent.putExtra("leilao", model)
+                intent.putExtra(LeilaoConstants.LEILAO_KEY, model)
                 startActivity(intent)
             }
         })
     }
 
-    private fun leiloesDeExemplo(): List<Leilao> {
-        val list = ArrayList<Leilao>()
+    override fun onResume() {
+        super.onResume()
 
-        val console = Leilao("Console")
-        console.newLance(Lance(Usuario("Eduardo"), 220.50))
-        console.newLance(Lance(Usuario("José"), 250.35))
-        console.newLance(Lance(Usuario("Felipe"), 55.0))
-        console.newLance(Lance(Usuario("Felipe"), 56.0))
+        client.getAll ( object : ResponseListener<List<Leilao>> {
+            override fun success(response: List<Leilao>?) {
+                leilaoAdapter.updateDataSet(response!!)
+            }
 
-        val carro = Leilao("Carro")
+            override fun error(message: String) {
+                Toast.makeText(
+                    this@MainActivity,
+                    MESSAGE_FAILED_LOAD_LEILOES,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
-        list.add(console)
-        list.add(carro)
-
-        return list
+        })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+
+        if (itemId == R.id.lista_leilao_menu_usuarios) {
+            val intent = Intent(this@MainActivity, UserListActivity::class.java)
+            startActivity(intent)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 }

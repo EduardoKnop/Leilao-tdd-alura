@@ -1,5 +1,7 @@
 package com.example.leilao.ui.recyclerview
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,13 +9,15 @@ import com.example.leilao.databinding.ItemLeilaoBinding
 import com.example.leilao.model.Leilao
 
 class LeilaoAdapter (
-    private var leiloes: List<Leilao>
+    private val context: Context
 ) : RecyclerView.Adapter<LeilaoAdapter.ViewHolder>() {
 
+    private var leiloes = arrayListOf<Leilao>()
     private var onClickListener: OnClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = ItemLeilaoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemLeilaoBinding.inflate(LayoutInflater
+            .from(parent.context), parent, false)
 
         return ViewHolder(view)
     }
@@ -32,7 +36,15 @@ class LeilaoAdapter (
     }
 
     override fun getItemCount(): Int {
+
         return leiloes.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataSet(leiloes: List<Leilao>) {
+        this.leiloes.clear()
+        this.leiloes.addAll(leiloes)
+        notifyDataSetChanged()
     }
 
     fun setOnClickListener(onClickListener: OnClickListener) {
