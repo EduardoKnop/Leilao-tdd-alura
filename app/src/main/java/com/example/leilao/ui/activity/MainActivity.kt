@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        leilaoAdapter = LeilaoAdapter(this@MainActivity)
+        leilaoAdapter = LeilaoAdapter()
 
         binding.listaLeilaoRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.listaLeilaoRecyclerview.adapter = leilaoAdapter

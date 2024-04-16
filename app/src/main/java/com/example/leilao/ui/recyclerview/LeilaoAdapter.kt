@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.leilao.databinding.ItemLeilaoBinding
 import com.example.leilao.model.Leilao
 
-class LeilaoAdapter (
-    private val context: Context
-) : RecyclerView.Adapter<LeilaoAdapter.ViewHolder>() {
+class LeilaoAdapter : RecyclerView.Adapter<LeilaoAdapter.ViewHolder>() {
 
     private var leiloes = arrayListOf<Leilao>()
     private var onClickListener: OnClickListener? = null
