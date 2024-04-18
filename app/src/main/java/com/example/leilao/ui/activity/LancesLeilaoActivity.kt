@@ -14,6 +14,7 @@ import com.example.leilao.databinding.FormLanceBinding
 import com.example.leilao.model.Lance
 import com.example.leilao.model.Leilao
 import com.example.leilao.ui.dialog.NewLanceDialog
+import com.example.leilao.ui.dialog.WarningDialog
 import java.io.Serializable
 
 class LancesLeilaoActivity : AppCompatActivity() {
@@ -50,7 +51,7 @@ class LancesLeilaoActivity : AppCompatActivity() {
                         object : NewLanceDialog.LanceCreatedListener {
                             override fun lanceCreated(lance: Lance) {
                                 val lanceSender = LanceSender(
-                                    this@LancesLeilaoActivity,
+                                    WarningDialog(this@LancesLeilaoActivity),
                                     client,
                                     object : LanceSender.LanceListener {
                                         override fun lanceReceived(leilao: Leilao) {

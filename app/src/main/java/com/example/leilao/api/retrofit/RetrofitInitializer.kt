@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val URL_BASE = "http://192.168.193.79:8080/"
+private const val URL_BASE = "http://192.168.19.72:8080/"
 class RetrofitInitializer {
 
     private var retrofit: Retrofit

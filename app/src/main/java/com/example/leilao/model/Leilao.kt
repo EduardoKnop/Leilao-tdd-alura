@@ -54,6 +54,24 @@ class Leilao(
         return lances.sorted().reversed()
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Leilao
+
+        if (descricao != other.descricao) return false
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = descricao.hashCode()
+        result = 31 * result + id.hashCode()
+        return result
+    }
+
     inner class CheaperLanceException(message: String) : RuntimeException(message)
 
     inner class SameUserException(message: String) : RuntimeException(message)

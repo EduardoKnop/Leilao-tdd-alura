@@ -12,6 +12,7 @@ import com.example.leilao.api.retrofit.client.LeilaoWebClient
 import com.example.leilao.api.retrofit.client.ResponseListener
 import com.example.leilao.databinding.ActivityMainBinding
 import com.example.leilao.model.Leilao
+import com.example.leilao.ui.LeilaoUpdate
 import com.example.leilao.ui.recyclerview.LeilaoAdapter
 
 private const val MESSAGE_FAILED_LOAD_LEILOES = "Não foi possível carregar os leilões"
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var leilaoAdapter: LeilaoAdapter
     private val client = LeilaoWebClient()
+    private val leilaoUpdate = LeilaoUpdate()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,19 +47,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        client.getAll ( object : ResponseListener<List<Leilao>> {
-            override fun success(response: List<Leilao>?) {
-                leilaoAdapter.updateDataSet(response!!)
-            }
-
-            override fun error(message: String) {
+        leilaoUpdate.updateLeilaoList(leilaoAdapter, client, object : LeilaoUpdate.StatusListener {
+            override fun onError(message: String) {
                 Toast.makeText(
-                    this@MainActivity,
-                    MESSAGE_FAILED_LOAD_LEILOES,
-                    Toast.LENGTH_SHORT
+                    this@MainActivity, MESSAGE_FAILED_LOAD_LEILOES, Toast.LENGTH_SHORT
                 ).show()
             }
-
         })
     }
 

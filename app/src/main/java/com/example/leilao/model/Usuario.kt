@@ -19,10 +19,16 @@ class Usuario (
 
         other as Usuario
 
-        return nome == other.nome
+        if (id != other.id) return false
+        if (nome != other.nome) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        return nome.hashCode()
+        var result = id.hashCode()
+        result = 31 * result + nome.hashCode()
+        return result
     }
+
 }

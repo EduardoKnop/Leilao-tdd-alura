@@ -4,13 +4,12 @@ import com.example.leilao.model.Leilao
 import org.junit.jupiter.api.Assertions.*
 
 import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import org.mockito.Spy
-import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.junit.jupiter.MockitoExtension
 
-@RunWith(MockitoJUnitRunner::class)
+@ExtendWith(MockitoExtension::class)
 class LeilaoAdapterTest {
 
     @Spy
@@ -18,7 +17,6 @@ class LeilaoAdapterTest {
 
     @Test
     fun updateDataSet_SendList_UpdatesAdapter() {
-        val mocks = MockitoAnnotations.openMocks(this)
         Mockito.doNothing().`when`(adapter).notifyDataSetChanged()
 
         adapter.updateDataSet(listOf(
@@ -28,11 +26,6 @@ class LeilaoAdapterTest {
 
         Mockito.verify(adapter).notifyDataSetChanged()
         assertEquals(2, adapter.itemCount)
-
-        mocks.close()
     }
 
-    @Test
-    fun setOnClickListener() {
-    }
 }
